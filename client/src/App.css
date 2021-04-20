@@ -1,7 +1,19 @@
 .App {
-  width: 100vw;
-  height: auto;
+  text-align: center;
+}
+
+body{
+  background-color: beige;
+}
+
+.registration, .login {
   display: flex;
-  align-items: center;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  width: 11rem;
+  height: 2rem;
 }
