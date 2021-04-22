@@ -1,13 +1,9 @@
 import React, {useState, useEffect} from "react";
 import Axios from 'axios';
-import './App.css';
-import {BrowserRouter as Router, Switch, Route, Link, BrowserRouter} from 'react-router-dom';
-import Home from './pages/Home';
-import Registration from './pages/Registration';
-import LogIn from './pages/Login';
-function App() {
 
-  // //we need to grab the information of inputs and to validate them
+function Login() {
+
+    // //we need to grab the information of inputs and to validate them
   // //usernameReg = username that is registered
   // const [usernameReg, setUsernameReg] = useState('');
   // const [passwordReg, setPasswordReg] = useState('');
@@ -57,17 +53,20 @@ function App() {
       
   //  })
   // }, [])
-
-  return(
-<Router>
-    <Switch>
-        <Route exact path="/" component={Home}></Route>
-        <Route exact path="/register" component={Registration}></Route>
-        <Route exact path="/login" component={LogIn}></Route>
-    </Switch>
-  </Router>
-  )
-  
-
+    return (
+        <div className="login">
+        <h1>Login</h1>
+        <input 
+          type="text" 
+          placeholder="Username..." 
+        />
+        <input type="password" 
+          placeholder="Password..." 
+         
+        />
+        <button> Login </button>
+      </div>
+    )
 }
-export default App;
+
+export default Login

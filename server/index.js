@@ -54,17 +54,31 @@ app.post('/register', (req,res) => {
 
     const username = req.body.username;
     const password = req.body.password;
+    console.log(username,password);
 
-    bcrypt.hash(password,saltRounds,(err,hash)=>{
-        if (err) {
-            console.log(err);
+
+    let sql = "SELECT * FROM users where username=?";
+    db.query(sql,[username], function(err,result){
+        if (err) throw err;
+        if (result.length > 0) {
+            console.log("username already exists!")
+            res.send("username already exists!")
+        } else {
+            bcrypt.hash(password,saltRounds,(err,hash) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    db.query(
+                        "INSERT INTO users (username,password) VALUES (?,?)",
+                        [username, hash], 
+                        (err,result) => {
+                        console.log(err);
+                    });
+                }
+            })
         }
-        db.query(
-            "INSERT INTO users (username,password) VALUES (?,?)",
-            [username, hash], 
-            (err,result) => {
-            console.log(err);
-        });
+     
     })
 })
 
