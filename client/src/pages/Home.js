@@ -11,7 +11,7 @@ function Home() {
         <div>
             <h1>Welcome to LuxPM website!</h1>
             <h2>Please Sign Up or Log in now!</h2>
-            <h3>This is a homepage: URL is "http://localhost:3000/home"</h3>
+            <h3>This is a homepage: URL is "http://localhost:3000/"</h3>
             <button onClick={navigateToRegister}>Register</button>
             <button onClick={navigateToLogin}>Login</button>
         </div>

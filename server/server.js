@@ -3,9 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
 
-//grabbing every single database models
+//grabbing every single database table from models
 const db = require('./models');
-
+const User = db.users;
 //parsing all of the req.body
 const bodyParser = require('body-parser');
 //parse all the cookies 
@@ -43,47 +43,36 @@ app.use(session({
     }
 }))
 
-//connecting to a database
-// const db = mysql.createConnection ({
-//     user: "root",
-//     host: "localhost",
-//     password: "1",
-//     database: "loginsystem",
-// });
 
+app.post('/register', (req,res) => {
 
+    const username = req.body.username;
+    const password = req.body.password;
+    //console.log(username,password);
 
-// app.post('/register', (req,res) => {
-
-//     const username = req.body.username;
-//     const password = req.body.password;
-//     console.log(username,password);
-
-
-//     let sql = "SELECT * FROM users where username=?";
-//     db.query(sql,[username], function(err,result){
-//         if (err) throw err;
-//         if (result.length > 0) {
-//             console.log("username already exists!")
-//             res.send("username already exists!")
-//         } else {
-//             bcrypt.hash(password,saltRounds,(err,hash) => {
-//                 if (err) {
-//                     console.log(err);
-//                 }
-//                 else {
-//                     db.query(
-//                         "INSERT INTO users (username,password) VALUES (?,?)",
-//                         [username, hash], 
-//                         (err,result) => {
-//                         console.log(err);
-//                     });
-//                 }
-//             })
-//         }
-     
-//     })
-// })
+    //check if the username is in database already
+    User.findOne({ where: { username: username }})
+        .then((userExists)=> {
+            if(userExists) {
+                return res.send(`The username "${username}" is already registered. Try to sign in with a different account`);
+            }
+            //if not hash the password
+            let hashedPassword = bcrypt.hashSync(password,saltRounds);
+            //insert into the databsae
+            User.create({
+                username: username,
+                password: hashedPassword
+            })
+            .then((response)=> {
+                console.log("successfully logged in", username);
+                return res.send(`The username "${username}" is registered successfully`);
+            })
+            //if not, return the databse insertion error
+            .catch((err)=> {
+                return res.send("There was a database error. Please check for further information")
+            });  
+        });  
+    });
 
 // app.get('/login', (req,res)=> {
 //     if (req.session.user) {

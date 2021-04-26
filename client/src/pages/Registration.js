@@ -8,6 +8,8 @@ function Registration() {
     const [usernameReg, setUsernameReg] = useState('');
     const [passwordReg, setPasswordReg] = useState('');
 
+    const [regStatus, setRegStatus] = useState('');
+
     //send information from frontend to the backend to see if session exists
     Axios.defaults.withCredentials = true;
 
@@ -16,27 +18,37 @@ function Registration() {
         username: usernameReg,
         password: passwordReg,
       }).then((response)=> {
-        console.log(response);
+        console.log(response.data);
+        setRegStatus(response.data);
       })
     }
 
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      e.target.reset();
+    }
+
     return (
-      <div className="registration">
-      <h1>Registration</h1>
-      <label>Username</label>
-      <input 
-        type="text" 
-        onChange={(e) => 
-          {setUsernameReg(e.target.value)}} 
-          />
-      <label>Password</label>
-      <input 
-        type="text" 
-        onChange={(e) => 
-          {setPasswordReg(e.target.value)}} 
-          />
-      <button onClick={register}> Register </button>
+    <form onSubmit={handleSubmit}>
+        <div className="registration">
+          <h1>Registration</h1>
+          <label>Username</label>
+            <input 
+              type="text" 
+              onChange={(e) => 
+                {setUsernameReg(e.target.value)}} 
+              />
+          <label>Password</label>
+            <input 
+              type="password" 
+              onChange={(e) => 
+                {setPasswordReg(e.target.value)}} 
+              />
+          <button onClick={register}> Register </button>
+          <h4>{regStatus}</h4>
       </div>
+    </form>
+      
     )
   }
 
